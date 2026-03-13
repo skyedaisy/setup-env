@@ -119,22 +119,47 @@ list_profiles() {
 
 apply_dotfiles() {
 
+    log "Applying dotfiles with stow..."
+
+    if ! command -v stow >/dev/null 2>&1; then
+        log "Installing stow..."
+        pkg_install stow
+    fi
+
     local DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
-    log "Applying dotfiles..."
+    # --------------------------
+    # common layer
+    # --------------------------
 
-    # pastikan chezmoi ada
-    if ! command -v chezmoi >/dev/null 2>&1; then
-        log "Installing chezmoi..."
-        sh -c "$(curl -fsLS get.chezmoi.io)"
-        export PATH="$HOME/.local/bin:$PATH"
+    if [ -d "$DOTFILES_DIR/common" ]; then
+        log "Applying common dotfiles"
+        stow -R -d "$DOTFILES_DIR" -t "$HOME" common
     fi
 
-    # pastikan source state ada
-    if [ ! -d "$HOME/.local/share/chezmoi" ]; then
-        log "Initializing chezmoi source..."
-        chezmoi init --source "$DOTFILES_DIR"
-    fi
+    # # --------------------------
+    # # machine layer
+    # # --------------------------
 
-    chezmoi apply
+    # if [ -n "${MACHINE:-}" ] && [ -d "$DOTFILES_DIR/machines/$MACHINE" ]; then
+    #     log "Applying machine dotfiles: $MACHINE"
+    #     stow -d "$DOTFILES_DIR/machines" -t "$HOME" "$MACHINE"
+    # fi
+
+    # # --------------------------
+    # # host layer
+    # # --------------------------
+
+    # local HOST_FILE="$HOME/.config/setup-env/host"
+
+    # if [ -f "$HOST_FILE" ]; then
+
+    #     local ROLE
+    #     ROLE=$(head -n1 "$HOST_FILE")
+
+    #     if [ -d "$DOTFILES_DIR/hosts/$ROLE" ]; then
+    #         log "Applying host dotfiles: $ROLE"
+    #         stow -d "$DOTFILES_DIR/hosts" -t "$HOME" "$ROLE"
+    #     fi
+    # fi
 }
