@@ -1,5 +1,7 @@
 name: docker
 
+description: Install Docker engine and configure service
+
 dependencies:
   - base
 

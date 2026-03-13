@@ -6,11 +6,60 @@ INSTALLED_MODULES=()
 load_modules() {
 
     for dir in "$SCRIPT_DIR/modules/"*; do
-        name=$(basename "$dir")
-        MODULES+=("$name")
+        [ -d "$dir" ] || continue
+}
+list_modules() {
+
+    echo ""
+    echo "Available modules:"
+    echo ""
+
+    for dir in "$SCRIPT_DIR/modules/"*; do
+
+        [ -d "$dir" ] || continue
+
+        yaml="$dir/module.yml"
+
+        name=$(yq -r '.name' "$yaml")
+        desc=$(yq -r '.description // "No description"' "$yaml")
+        deps=$(yq -r '.dependencies[]?' "$yaml" | tr '\n' ' ')
+
+        printf "%-12s %s\n" "$name" "$desc"
+
+        if [ -n "$deps" ]; then
+            echo "             deps: $deps"
+        fi
+
+        echo ""
+
     done
 }
+module_info() {
 
+    module="$1"
+
+    yaml="$SCRIPT_DIR/modules/$module/module.yml"
+
+    if [ ! -f "$yaml" ]; then
+        echo "Module not found"
+        exit 1
+    fi
+
+    echo ""
+    echo "Module: $(yq -r '.name' "$yaml")"
+    echo ""
+
+    echo "Description:"
+    yq -r '.description' "$yaml"
+    echo ""
+
+    echo "Dependencies:"
+    yq -r '.dependencies[]?' "$yaml"
+    echo ""
+
+    echo "Packages for $DISTRO:"
+    yq -r ".packages.$DISTRO[]" "$yaml"
+}
 run_module() {
 
     local module="$1"
@@ -62,7 +111,11 @@ run_interactive() {
                 ;;
 
             *)
-                run_module "$opt"
+                if [[ " ${MODULES[*]} " =~ " $opt " ]]; then
+                    run_module "$opt"
+                else
+                    echo "Invalid option"
+                fi
                 ;;
         esac
     done

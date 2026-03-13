@@ -1,5 +1,7 @@
 name: dev
 
+description: Developer tools (tmux, ripgrep, fd, etc)
+
 dependencies:
   - base
 
@@ -8,8 +10,6 @@ packages:
     - tmux
     - ripgrep
     - fd
-    - lazygit
-
   ubuntu:
     - tmux
     - ripgrep
