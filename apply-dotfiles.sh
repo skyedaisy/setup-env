@@ -4,42 +4,43 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
-stow_layer() {
-    local layer="$1"
-    local layer_dir="$DOTFILES_DIR/$layer"
+echo "[dotfiles] Applying dotfiles..."
 
-    if [[ -d "$layer_dir" ]]; then
-        echo "Applying $layer"
-        stow -R -d "$layer_dir" -t "$HOME" .
+apply_layer() {
+
+    local layer="$1"
+    local dir="$DOTFILES_DIR/$layer"
+
+    if [[ -d "$dir" ]]; then
+        echo "[dotfiles] layer: $layer"
+        stow -R -d "$dir" -t "$HOME" .
     fi
+
 }
 
-echo "Applying dotfiles..."
+# common config
+apply_layer common
 
-# common
-stow_layer common
-
-# machine
+# machine config
 case "${MACHINE:-unknown}" in
-    wsl) stow_layer machines/wsl ;;
-    vm) stow_layer machines/vm ;;
-    baremetal) stow_layer machines/linux ;;
+    wsl) apply_layer machines/wsl ;;
+    vm) apply_layer machines/vm ;;
+    baremetal) apply_layer machines/linux ;;
 esac
 
-# host roles
+# host config
 HOST_FILE="$HOME/.config/setup-env/host"
 
 if [[ -f "$HOST_FILE" ]]; then
-    while IFS= read -r role || [[ -n "$role" ]]; do
+
+    while read -r role; do
 
         [[ -z "$role" ]] && continue
 
-        if [[ -d "$DOTFILES_DIR/hosts/$role" ]]; then
-            echo "Applying host role: $role"
-            stow_layer hosts/$role
-        fi
+        apply_layer "hosts/$role"
 
     done < "$HOST_FILE"
+
 fi
 
-echo "Dotfiles applied."
+echo "[dotfiles] Done"
