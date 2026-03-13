@@ -33,6 +33,7 @@ run_command() {
         *)
             # treat as module name
             run_installer "$@"
+            exit 0
             ;;
 
     esac

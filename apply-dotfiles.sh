@@ -5,14 +5,12 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
 apply_layer() {
-    local layer="$1"
 
-    if [ -d "$DOTFILES_DIR/$layer" ]; then
-        echo "Applying $layer"
-        stow -R \
-            --dir "$DOTFILES_DIR/$layer" \
-            --target "$HOME" \
-            .
+    local layer="$1"
+    local dir="$DOTFILES_DIR/$layer"
+
+    if [[ -d "$dir" ]]; then
+        stow -R --target "$HOME" --dir "$dir" .
     fi
 }
 
