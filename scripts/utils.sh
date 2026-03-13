@@ -27,50 +27,6 @@ detect_package_manager() {
         exit 1
     fi
 }
-
-# -----------------------------------------
-# apply dotfiles using stow
-# -----------------------------------------
-apply_dotfiles() {
-
-    log "Applying dotfiles..."
-
-    if ! command -v stow &>/dev/null; then
-        echo "stow not installed"
-        exit 1
-    fi
-
-    DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
-
-    cd "$DOTFILES_DIR"
-
-    # common
-    stow -R -t "$HOME" common
-
-    # machine
-    case "${MACHINE:-unknown}" in
-        wsl)
-            stow -R -d machines -t "$HOME" wsl
-            ;;
-        vm)
-            stow -R -d machines -t "$HOME" vm
-            ;;
-        baremetal)
-            stow -R -d machines -t "$HOME" linux
-            ;;
-    esac
-
-    # host
-    HOST_FILE="$HOME/.config/setup-env/host"
-
-    if [ -f "$HOST_FILE" ]; then
-        ROLE=$(head -n1 "$HOST_FILE")
-
-        if [ -d "hosts/$ROLE" ]; then
-            stow -R -d hosts -t "$HOME" "$ROLE"
-        fi
-    fi
-}
 get_host_role() {
 
     HOST_FILE="$HOME/.config/setup-env/host"
@@ -159,4 +115,10 @@ list_profiles() {
         basename "$file" .yml
     done
 
+}
+
+apply_dotfiles() {
+    echo "[dotfiles] applying config"
+    chezmoi init --source "$DOTFILES_DIR"
+    chezmoi apply
 }
