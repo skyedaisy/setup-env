@@ -4,7 +4,7 @@
 # simple logging helper
 # -----------------------------------------
 log() {
-    log "Installing module $module"
+    echo "[setup-env] $*"
 }
 
 # -----------------------------------------
