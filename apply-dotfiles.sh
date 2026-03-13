@@ -8,25 +8,11 @@ DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 cd "$DOTFILES_DIR"
 
 stow_layer() {
-
     local layer="$1"
 
-    if [[ ! -d "$layer" ]]; then
-        return
-    fi
-
-    echo "Applying $layer"
-
-    if [[ "$layer" == *"/"* ]]; then
-        local parent
-        local package
-
-        parent="$(dirname "$layer")"
-        package="$(basename "$layer")"
-
-        stow -R -d "$parent" -t "$HOME" "$package"
-    else
-        stow -R -t "$HOME" "$layer"
+    if [[ -d "$DOTFILES_DIR/$layer" ]]; then
+        echo "Applying $layer"
+        stow -R --dir "$DOTFILES_DIR" --target "$HOME" "$layer"
     fi
 }
 
