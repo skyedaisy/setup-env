@@ -110,18 +110,32 @@ get_profile_from_host() {
     ROLE=$(head -n1 "$HOST_FILE")
 
     case "$ROLE" in
-        laptop|desktop)
-            PROFILE="dev"
+        home)
+            PROFILE="base"
             ;;
         pentest)
             PROFILE="pentest"
             ;;
-        server|lab)
+        server)
             PROFILE="server"
+            ;;
+        dev)
+            PROFILE="dev"
             ;;
         *)
             PROFILE=""
             ;;
     esac
+
+}
+
+list_profiles() {
+
+    echo "Available profiles:"
+    echo
+
+    for file in "$SCRIPT_DIR"/profiles/*.yml; do
+        basename "$file" .yml
+    done
 
 }
