@@ -9,13 +9,18 @@ stow_layer() {
 
     if [[ -d "$DOTFILES_DIR/$layer" ]]; then
         echo "Applying $layer"
-        stow -R --dir "$DOTFILES_DIR" --target "$HOME" "$layer"
+
+        stow -R \
+            --no-folding \
+            --dir "$DOTFILES_DIR" \
+            --target "$HOME" \
+            "$layer"
     fi
 }
 
 echo "Applying dotfiles..."
 
-# common
+# global
 stow_layer common
 
 # machine
@@ -25,7 +30,7 @@ case "${MACHINE:-unknown}" in
     baremetal) stow_layer machines/linux ;;
 esac
 
-# host roles
+# host
 HOST_FILE="$HOME/.config/setup-env/host"
 
 if [[ -f "$HOST_FILE" ]]; then
