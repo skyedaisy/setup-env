@@ -38,5 +38,5 @@ fi
 # ------------------------------
 # Post install
 # ------------------------------
-./apply_dotfiles.sh
+bash apply_dotfiles.sh
 apply_machine_tweaks
