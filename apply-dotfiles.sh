@@ -5,15 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
 apply_layer() {
-
     local layer="$1"
-    local dir="$DOTFILES_DIR/$layer"
 
-    if [[ -d "$dir" ]]; then
-        echo "[dotfiles] applying $layer"
-        stow -R --dir "$dir" --target "$HOME" .
+    if [ -d "$DOTFILES_DIR/$layer" ]; then
+        echo "Applying $layer"
+        stow -R \
+            --dir "$DOTFILES_DIR/$layer" \
+            --target "$HOME" \
+            .
     fi
-
 }
 
 apply_layer common
@@ -26,9 +26,9 @@ esac
 
 HOST_FILE="$HOME/.config/setup-env/host"
 
-if [[ -f "$HOST_FILE" ]]; then
+if [ -f "$HOST_FILE" ]; then
     while read -r role; do
-        [[ -z "$role" ]] && continue
+        [ -z "$role" ] && continue
         apply_layer "hosts/$role"
     done < "$HOST_FILE"
 fi
