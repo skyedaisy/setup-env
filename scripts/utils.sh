@@ -118,7 +118,16 @@ list_profiles() {
 }
 
 apply_dotfiles() {
+
+    local DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
+
     echo "[dotfiles] applying config"
+
+    if ! command -v chezmoi >/dev/null 2>&1; then
+        log "Installing chezmoi..."
+        sh -c "$(curl -fsLS get.chezmoi.io)"
+    fi
+
     chezmoi init --source "$DOTFILES_DIR"
     chezmoi apply
 }
