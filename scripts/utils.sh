@@ -121,13 +121,20 @@ apply_dotfiles() {
 
     local DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
-    echo "[dotfiles] applying config"
+    log "Applying dotfiles..."
 
+    # pastikan chezmoi ada
     if ! command -v chezmoi >/dev/null 2>&1; then
         log "Installing chezmoi..."
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
+        sh -c "$(curl -fsLS get.chezmoi.io)"
+        export PATH="$HOME/.local/bin:$PATH"
     fi
 
-    chezmoi init --source "$DOTFILES_DIR"
+    # pastikan source state ada
+    if [ ! -d "$HOME/.local/share/chezmoi" ]; then
+        log "Initializing chezmoi source..."
+        chezmoi init --source "$DOTFILES_DIR"
+    fi
+
     chezmoi apply
 }
