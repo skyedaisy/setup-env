@@ -45,6 +45,7 @@ apply_dotfiles() {
     cd "$DOTFILES_DIR"
 
     for dir in */ ; do
+        [ -d "$dir" ] || continue
         stow "$dir"
     done
 }
