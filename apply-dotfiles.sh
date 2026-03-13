@@ -22,9 +22,7 @@ echo "Applying dotfiles..."
 # --------------------
 # common config
 # --------------------
-
-stow_layer common
-
+stow common
 # --------------------
 # machine layer
 # --------------------

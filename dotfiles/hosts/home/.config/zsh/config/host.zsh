@@ -1,0 +1,2 @@
+# home machine theme
+ZSH_THEME="powerlevel10k/powerlevel10k"

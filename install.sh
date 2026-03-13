@@ -14,7 +14,21 @@ bootstrap_tools
 detect_machine
 
 load_modules
+current_shell=$(basename "$SHELL")
 
+log "Detected shell: $current_shell"
+
+case "$current_shell" in
+    zsh)
+        log "Using zsh configuration"
+        ;;
+    bash)
+        log "Using bash configuration"
+        ;;
+    *)
+        log "Unknown shell: $current_shell"
+        ;;
+esac
 # ------------------------------
 # CLI mode
 # ------------------------------

@@ -1,0 +1,10 @@
+name: server
+dependencies: []
+
+packages:
+  arch:
+    - fail2ban
+    - ufw
+  ubuntu:
+    - ufw
+    - fail2ban
