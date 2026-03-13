@@ -8,9 +8,11 @@ packages:
     - stow
     - tmux
     - neovim
+    - zsh
 
   ubuntu:
     - wget
     - stow
     - tmux
     - neovim
+    - zsh
