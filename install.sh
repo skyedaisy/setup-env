@@ -7,20 +7,40 @@ source "$SCRIPT_DIR/lib/utils.sh"
 source "$SCRIPT_DIR/lib/bootstrap.sh"
 source "$SCRIPT_DIR/lib/machine.sh"
 source "$SCRIPT_DIR/lib/modules.sh"
+source "$SCRIPT_DIR/lib/dispatcher.sh"
 
 detect_package_manager
 bootstrap_tools
 detect_machine
+
 load_modules
-if [ "${1:-}" = "--list" ]; then
-    list_modules
+
+# --------------------------------
+# CLI commands
+# --------------------------------
+
+if [ $# -gt 0 ]; then
+    run_command "$@"
     exit 0
 fi
-if [ "${1:-}" = "--info" ]; then
-    module_info "$2"
-    exit 0
+
+# --------------------------------
+# Auto profile from host
+# --------------------------------
+
+get_host_role
+get_profile_from_host
+
+if [ -n "${PROFILE:-}" ]; then
+    log "Using profile: $PROFILE"
+    load_profile "$PROFILE"
+else
+    run_installer
 fi
-run_installer "$@"
+
+# --------------------------------
+# Post install
+# --------------------------------
 
 apply_machine_tweaks
 apply_dotfiles

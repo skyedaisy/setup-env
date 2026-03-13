@@ -49,3 +49,79 @@ apply_dotfiles() {
         stow "$dir"
     done
 }
+
+setup_host_role() {
+
+    HOST_FILE="$HOME/.config/setup-env/host"
+
+    # jika sudah ada jangan overwrite
+    if [ -f "$HOST_FILE" ]; then
+        echo "Host role already configured:"
+        cat "$HOST_FILE"
+        return
+    fi
+
+    echo ""
+    echo "Select host role:"
+    echo ""
+
+    options=("home" "server" "pentest" "lab" "custom")
+
+    select opt in "${options[@]}"; do
+
+        case $opt in
+
+            home|server|pentest|lab)
+
+                ROLE="$opt"
+                break
+                ;;
+
+            custom)
+
+                read -rp "Enter custom role: " ROLE
+                break
+                ;;
+
+            *)
+
+                echo "Invalid option"
+                ;;
+
+        esac
+
+    done
+
+    mkdir -p "$(dirname "$HOST_FILE")"
+
+    echo "$ROLE" > "$HOST_FILE"
+
+    echo "Host role set to: $ROLE"
+}
+
+get_profile_from_host() {
+
+    HOST_FILE="$HOME/.config/setup-env/host"
+
+    if [ ! -f "$HOST_FILE" ]; then
+        return
+    fi
+
+    ROLE=$(head -n1 "$HOST_FILE")
+
+    case "$ROLE" in
+        laptop|desktop)
+            PROFILE="dev"
+            ;;
+        pentest)
+            PROFILE="pentest"
+            ;;
+        server|lab)
+            PROFILE="server"
+            ;;
+        *)
+            PROFILE=""
+            ;;
+    esac
+
+}
