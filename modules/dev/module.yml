@@ -1,0 +1,16 @@
+name: dev
+
+dependencies:
+  - base
+
+packages:
+  arch:
+    - tmux
+    - ripgrep
+    - fd
+    - lazygit
+
+  ubuntu:
+    - tmux
+    - ripgrep
+    - fd-find

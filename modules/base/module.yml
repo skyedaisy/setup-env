@@ -1,0 +1,16 @@
+name: base
+
+dependencies: []
+
+packages:
+  arch:
+    - wget
+    - stow
+    - tmux
+    - neovim
+
+  ubuntu:
+    - wget
+    - stow
+    - tmux
+    - neovim
