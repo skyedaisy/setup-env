@@ -49,15 +49,13 @@ rm -rf "$TMP_DIR"
 
 ensure_zshrc() {
 
-    if [ ! -e "$HOME/.zshrc" ]; then
-        echo "[zsh] Creating placeholder .zshrc"
+if [ ! -e "$HOME/.zshrc" ] && [ ! -L "$HOME/.zshrc" ]; then
+    echo "[zsh] Creating placeholder .zshrc"
 
-        cat > "$HOME/.zshrc" <<'EOF'
+    cat > "$HOME/.zshrc" <<'EOF'
 # placeholder created by setup-env
-# real config will be managed by dotfiles
 EOF
-
-    fi
+fi
 }
 ensure_zshrc
 # change default shell
