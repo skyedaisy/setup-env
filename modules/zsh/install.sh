@@ -8,16 +8,16 @@ if ! command -v git >/dev/null 2>&1; then
     exit 1
 fi
 
-ZSH_DIR="$HOME/.oh-my-zsh"
-CUSTOM_DIR="$ZSH_DIR/custom"
 
-mkdir -p "$CUSTOM_DIR/plugins"
-mkdir -p "$CUSTOM_DIR/themes"
 
 # install oh-my-zsh
 if [ ! -d "$ZSH_DIR" ]; then
     echo "Installing Oh My Zsh..."
+    ZSH_DIR="$HOME/.oh-my-zsh"
+    CUSTOM_DIR="$ZSH_DIR/custom"
     git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "$ZSH_DIR"
+    mkdir -p "$CUSTOM_DIR/plugins"
+    mkdir -p "$CUSTOM_DIR/themes"
 fi
 
 # install powerlevel10k
