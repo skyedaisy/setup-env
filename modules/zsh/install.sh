@@ -47,6 +47,19 @@ cp "$TMP_DIR/themes/catppuccin-mocha.ini" \
 "$CUSTOM_DIR/plugins/fast-syntax-highlighting/themes"
 rm -rf "$TMP_DIR"
 
+ensure_zshrc() {
+
+    if [ ! -e "$HOME/.zshrc" ]; then
+        echo "[zsh] Creating placeholder .zshrc"
+
+        cat > "$HOME/.zshrc" <<'EOF'
+# placeholder created by setup-env
+# real config will be managed by dotfiles
+EOF
+
+    fi
+}
+ensure_zshrc
 # change default shell
 if command -v zsh >/dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
     chsh -s "$(command -v zsh)"
