@@ -15,10 +15,10 @@ CUSTOM_DIR="$ZSH_DIR/custom"
 if [ ! -d "$ZSH_DIR" ]; then
     echo "Installing Oh My Zsh..."
     git clone --depth 1 https://github.com/ohmyzsh/ohmyzsh.git "$ZSH_DIR"
-    mkdir -p "$CUSTOM_DIR/plugins"
-    mkdir -p "$CUSTOM_DIR/themes"
 fi
 
+mkdir -p "$CUSTOM_DIR/plugins"
+mkdir -p "$CUSTOM_DIR/themes"
 # install powerlevel10k
 if [ ! -d "$CUSTOM_DIR/themes/powerlevel10k" ]; then
     echo "Installing Powerlevel10k..."
