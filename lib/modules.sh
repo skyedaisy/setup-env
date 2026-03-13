@@ -48,7 +48,7 @@ load_profile() {
         exit 1
     fi
 
-    modules=$(yq '.modules[]' "$profile_file")
+    modules=$(yq -r '.modules[]' "$profile_file")
 
     for module in $modules; do
         run_module "$module"
