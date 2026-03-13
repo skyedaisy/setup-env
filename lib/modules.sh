@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+shopt -s nullglob
 MODULES=()
 INSTALLED_MODULES=()
 
@@ -7,6 +7,10 @@ load_modules() {
 
     for dir in "$SCRIPT_DIR/modules/"*; do
         [ -d "$dir" ] || continue
+
+        name=$(basename "$dir")
+        MODULES+=("$name")
+    done
 }
 list_modules() {
 

@@ -3,18 +3,23 @@
 set -euo pipefail
 
 echo "Applying dotfiles..."
+
 if ! command -v stow &>/dev/null; then
     echo "stow not installed"
     exit 1
 fi
-DOTFILES_DIR="$(dirname "$0")/dotfiles"
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
 cd "$DOTFILES_DIR"
 
 for dir in */; do
-    dir=${dir%/}
+    [ -d "$dir" ] || continue
+
     echo "Stowing $dir"
-    stow "$dir"
+
+    stow -R -t "$HOME" "$dir"
 done
 
 echo "Dotfiles applied."
