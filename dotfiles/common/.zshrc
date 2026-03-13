@@ -6,10 +6,7 @@ plugins=(git)
 
 source $ZSH/oh-my-zsh.sh
 
-# ----------------
-# core config
-# ----------------
-
+# load modular config
 for file in ~/.config/zsh/*.zsh; do
     source "$file"
 done
