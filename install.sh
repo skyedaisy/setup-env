@@ -38,5 +38,6 @@ fi
 # ------------------------------
 # Post install
 # ------------------------------
+cd "$SCRIPT_DIR/dotfiles"
 apply_dotfiles
 apply_machine_tweaks

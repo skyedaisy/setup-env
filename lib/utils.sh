@@ -44,36 +44,33 @@ apply_dotfiles() {
 
     cd "$DOTFILES_DIR"
 
-    # only stow common configs
-    if [ -d "common" ]; then
-        stow -R -t "$HOME" common
-    fi
+    # common
+    stow -R -t "$HOME" common
 
-    # machine specific
+    # machine
     case "${MACHINE:-unknown}" in
         wsl)
-            stow -R -t "$HOME" machines/wsl
+            stow -R -d machines -t "$HOME" wsl
             ;;
         vm)
-            stow -R -t "$HOME" machines/vm
+            stow -R -d machines -t "$HOME" vm
             ;;
         baremetal)
-            stow -R -t "$HOME" machines/linux
+            stow -R -d machines -t "$HOME" linux
             ;;
     esac
 
-    # host specific
+    # host
     HOST_FILE="$HOME/.config/setup-env/host"
 
     if [ -f "$HOST_FILE" ]; then
         ROLE=$(head -n1 "$HOST_FILE")
 
         if [ -d "hosts/$ROLE" ]; then
-            stow -R -t "$HOME" "hosts/$ROLE"
+            stow -R -d hosts -t "$HOME" "$ROLE"
         fi
     fi
 }
-
 get_host_role() {
 
     HOST_FILE="$HOME/.config/setup-env/host"
