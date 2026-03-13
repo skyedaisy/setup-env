@@ -147,30 +147,30 @@ apply_dotfiles() {
         stow -R -d "$DOTFILES_DIR" -t "$HOME" common
     fi
 
-    # # --------------------------
-    # # machine layer
-    # # --------------------------
+    # --------------------------
+    # machine layer
+    # --------------------------
 
-    # if [ -n "${MACHINE:-}" ] && [ -d "$DOTFILES_DIR/machines/$MACHINE" ]; then
-    #     log "Applying machine dotfiles: $MACHINE"
-    #     stow -d "$DOTFILES_DIR/machines" -t "$HOME" "$MACHINE"
-    # fi
+    if [ -n "${MACHINE:-}" ] && [ -d "$DOTFILES_DIR/machines/$MACHINE" ]; then
+        log "Applying machine dotfiles: $MACHINE"
+        stow -d "$DOTFILES_DIR/machines" -t "$HOME" "$MACHINE"
+    fi
 
-    # # --------------------------
-    # # host layer
-    # # --------------------------
+    # --------------------------
+    # host layer
+    # --------------------------
 
-    # local HOST_FILE="$HOME/.config/setup-env/host"
+    local HOST_FILE="$HOME/.config/setup-env/host"
 
-    # if [ -f "$HOST_FILE" ]; then
+    if [ -f "$HOST_FILE" ]; then
 
-    #     local ROLE
-    #     ROLE=$(head -n1 "$HOST_FILE")
+        local ROLE
+        ROLE=$(head -n1 "$HOST_FILE")
 
-    #     if [ -d "$DOTFILES_DIR/hosts/$ROLE" ]; then
-    #         log "Applying host dotfiles: $ROLE"
-    #         stow -d "$DOTFILES_DIR/hosts" -t "$HOME" "$ROLE"
-    #     fi
-    # fi
+        if [ -d "$DOTFILES_DIR/hosts/$ROLE" ]; then
+            log "Applying host dotfiles: $ROLE"
+            stow -d "$DOTFILES_DIR/hosts" -t "$HOME" "$ROLE"
+        fi
+    fi
 }
 
