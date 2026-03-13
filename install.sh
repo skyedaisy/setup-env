@@ -4,10 +4,10 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 source "$SCRIPT_DIR/lib/utils.sh"
-source "$SCRIPT_DIR/lib/dispatcher.sh"
 source "$SCRIPT_DIR/lib/bootstrap.sh"
 source "$SCRIPT_DIR/lib/machine.sh"
-source "$SCRIPT_DIR/lib/modules.sh"
+source "$SCRIPT_DIR/lib/modules.sh"   # harus sebelum dispatcher
+source "$SCRIPT_DIR/lib/dispatcher.sh"
 
 detect_package_manager
 bootstrap_tools
