@@ -1,6 +1,12 @@
 #!/usr/bin/env bash
+set -e
 
 echo "Installing Zsh ecosystem..."
+
+if ! command -v git >/dev/null 2>&1; then
+    echo "git is required"
+    exit 1
+fi
 
 ZSH_DIR="$HOME/.oh-my-zsh"
 CUSTOM_DIR="$ZSH_DIR/custom"
@@ -42,16 +48,17 @@ https://github.com/marlonrichert/zsh-autocomplete
 install_plugin zsh-autosuggestions \
 https://github.com/zsh-users/zsh-autosuggestions
 
-# install catppuccin theme
-THEME_FILE="$CUSTOM_DIR/plugins/fast-syntax-highlighting/themes/catppuccin-mocha.ini"
+# catppuccin theme
+THEME_DIR="$CUSTOM_DIR/plugins/fast-syntax-highlighting/themes"
+THEME_FILE="$THEME_DIR/catppuccin-mocha.ini"
 
 if [ ! -f "$THEME_FILE" ]; then
+    mkdir -p "$THEME_DIR"
     TMP_DIR=$(mktemp -d)
 
     git clone --depth 1 https://github.com/catppuccin/zsh-fsh.git "$TMP_DIR"
 
-    cp "$TMP_DIR/themes/catppuccin-mocha.ini" \
-    "$CUSTOM_DIR/plugins/fast-syntax-highlighting/themes"
+    cp "$TMP_DIR/themes/catppuccin-mocha.ini" "$THEME_DIR"
 
     rm -rf "$TMP_DIR"
 fi
