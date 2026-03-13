@@ -39,5 +39,8 @@ fi
 # Post install
 # ------------------------------
 
+# ensure correct working directory
+cd "$SCRIPT_DIR"
+
 apply_dotfiles
 apply_machine_tweaks
