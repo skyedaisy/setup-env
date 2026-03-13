@@ -5,6 +5,9 @@ echo "Installing Zsh ecosystem..."
 ZSH_DIR="$HOME/.oh-my-zsh"
 CUSTOM_DIR="$ZSH_DIR/custom"
 
+mkdir -p "$CUSTOM_DIR/plugins"
+mkdir -p "$CUSTOM_DIR/themes"
+
 # install oh-my-zsh
 if [ ! -d "$ZSH_DIR" ]; then
     echo "Installing Oh My Zsh..."
@@ -18,7 +21,6 @@ if [ ! -d "$CUSTOM_DIR/themes/powerlevel10k" ]; then
         "$CUSTOM_DIR/themes/powerlevel10k"
 fi
 
-# plugins
 install_plugin () {
     name="$1"
     repo="$2"
@@ -29,11 +31,23 @@ install_plugin () {
     fi
 }
 
-git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
-git clone https://github.com/marlonrichert/zsh-autocomplete.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autocomplete
-git clone https://github.com/zsh-users/zsh-autosuggestions.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/catppuccin/zsh-fsh.git && cp zsh-fsh/themes/catppuccin-mocha.ini $HOME/.oh-my-zsh/plugins/fast-syntax-highlighting/themes && rm -rf zsh-fsh
-# change default shell to zsh
+install_plugin fast-syntax-highlighting \
+https://github.com/zdharma-continuum/fast-syntax-highlighting
+
+install_plugin zsh-autocomplete \
+https://github.com/marlonrichert/zsh-autocomplete
+
+install_plugin zsh-autosuggestions \
+https://github.com/zsh-users/zsh-autosuggestions
+
+# catppuccin theme
+TMP_DIR=$(mktemp -d)
+git clone https://github.com/catppuccin/zsh-fsh.git "$TMP_DIR"
+cp "$TMP_DIR/themes/catppuccin-mocha.ini" \
+"$CUSTOM_DIR/plugins/fast-syntax-highlighting/themes"
+rm -rf "$TMP_DIR"
+
+# change default shell
 if command -v zsh >/dev/null && [ "$SHELL" != "$(command -v zsh)" ]; then
     chsh -s "$(command -v zsh)"
 fi
