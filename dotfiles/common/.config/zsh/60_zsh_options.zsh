@@ -1,0 +1,4 @@
+setopt autocd
+setopt interactive_comments
+setopt hist_ignore_dups
+setopt EXTENDED_HISTORY
