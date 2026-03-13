@@ -125,7 +125,7 @@ apply_dotfiles() {
 
     if ! command -v chezmoi >/dev/null 2>&1; then
         log "Installing chezmoi..."
-        sh -c "$(curl -fsLS get.chezmoi.io)"
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- -b $HOME/.local/bin
     fi
 
     chezmoi init --source "$DOTFILES_DIR"
