@@ -6,21 +6,17 @@ DOTFILES_DIR="$SCRIPT_DIR/dotfiles"
 
 stow_layer() {
     local layer="$1"
+    local layer_dir="$DOTFILES_DIR/$layer"
 
-    if [[ -d "$DOTFILES_DIR/$layer" ]]; then
+    if [[ -d "$layer_dir" ]]; then
         echo "Applying $layer"
-
-        stow -R \
-            --no-folding \
-            --dir "$DOTFILES_DIR" \
-            --target "$HOME" \
-            "$layer"
+        stow -R -d "$layer_dir" -t "$HOME" .
     fi
 }
 
 echo "Applying dotfiles..."
 
-# global
+# common
 stow_layer common
 
 # machine
@@ -30,7 +26,7 @@ case "${MACHINE:-unknown}" in
     baremetal) stow_layer machines/linux ;;
 esac
 
-# host
+# host roles
 HOST_FILE="$HOME/.config/setup-env/host"
 
 if [[ -f "$HOST_FILE" ]]; then
