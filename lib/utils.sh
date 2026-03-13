@@ -50,7 +50,7 @@ apply_dotfiles() {
     done
 }
 
-setup_host_role() {
+get_host_role() {
 
     HOST_FILE="$HOME/.config/setup-env/host"
 
