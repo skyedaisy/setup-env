@@ -11,9 +11,13 @@ stow_layer() {
 
     local layer="$1"
 
-    if [[ -d "$layer" ]]; then
-        echo "Applying $layer"
+    if [[ ! -d "$layer" ]]; then
+        return
+    fi
 
+    echo "Applying $layer"
+
+    if [[ "$layer" == *"/"* ]]; then
         local parent
         local package
 
@@ -21,6 +25,8 @@ stow_layer() {
         package="$(basename "$layer")"
 
         stow -R -d "$parent" -t "$HOME" "$package"
+    else
+        stow -R -t "$HOME" "$layer"
     fi
 }
 
