@@ -31,8 +31,8 @@ run_command() {
             ;;
 
         *)
-            echo "Unknown option: $cmd"
-            exit 1
+            # treat as module name
+            run_installer "$@"
             ;;
 
     esac
