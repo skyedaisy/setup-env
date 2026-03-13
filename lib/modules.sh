@@ -38,6 +38,23 @@ list_modules() {
 
     done
 }
+load_profile() {
+
+    profile="$1"
+    profile_file="$SCRIPT_DIR/profiles/$profile.yml"
+
+    if [ ! -f "$profile_file" ]; then
+        echo "Profile not found: $profile"
+        exit 1
+    fi
+
+    modules=$(yq '.modules[]' "$profile_file")
+
+    for module in $modules; do
+        run_module "$module"
+    done
+
+}
 module_info() {
 
     module="$1"
