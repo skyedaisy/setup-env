@@ -6,8 +6,6 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 plugins=(git)
 
-source $HOME/oh-my-zsh.sh
-
 # load modular configs
 for file in $CONFIG_DIR/*.zsh; do
   source "$file"
