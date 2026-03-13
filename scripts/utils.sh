@@ -116,7 +116,15 @@ list_profiles() {
     done
 
 }
+backup_if_exists() {
 
+    local file="$1"
+
+    if [ -e "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
+        log "Backing up $file"
+        mv "$HOME/$file" "$HOME/$file.backup"
+    fi
+}
 apply_dotfiles() {
 
     log "Applying dotfiles with stow..."
@@ -134,6 +142,8 @@ apply_dotfiles() {
 
     if [ -d "$DOTFILES_DIR/common" ]; then
         log "Applying common dotfiles"
+        backup_if_exists ".bashrc"
+        backup_if_exists ".zshrc"
         stow -R -d "$DOTFILES_DIR" -t "$HOME" common
     fi
 
@@ -163,3 +173,4 @@ apply_dotfiles() {
     #     fi
     # fi
 }
+
