@@ -1,13 +1,15 @@
-# ~/.zshrc
+export ZSH="$HOME/.oh-my-zsh"
 
-# ---------------- core config ----------------
-source ~/.config/zsh/config/env.zsh
-source ~/.config/zsh/config/aliases.zsh
-source ~/.config/zsh/config/plugins.zsh
-source ~/.config/zsh/config/theme.zsh
+ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# ---------------- machine layer ----------------
-[ -f ~/.config/zsh/config/machine.zsh ] && source ~/.config/zsh/config/machine.zsh
+plugins=(git)
 
-# ---------------- host layer ----------------
-[ -f ~/.config/zsh/config/host.zsh ] && source ~/.config/zsh/config/host.zsh
+source $ZSH/oh-my-zsh.sh
+
+# ----------------
+# core config
+# ----------------
+
+for file in ~/.config/zsh/*.zsh; do
+    source "$file"
+done
