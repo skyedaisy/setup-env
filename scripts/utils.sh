@@ -146,18 +146,5 @@ apply_dotfiles() {
         backup_if_exists ".zshrc"
         stow -R -d "$DOTFILES_DIR" -t "$HOME" common
     fi
-
-
-    # machine layer
-    cd "$DOTFILES_DIR/machines"
-    stow -R -t "$HOME" "$MACHINE"
-
-    # profile layer
-    if [[ -n "${PROFILE:-}" ]]; then
-        if [[ -d "$DOTFILES_DIR/profiles/$PROFILE" ]]; then
-            log "Applying profile: $PROFILE"
-            stow -nvt -d "$DOTFILES_DIR/profiles" -t "$HOME" "$PROFILE"
-        fi
-    fi
 }
 
