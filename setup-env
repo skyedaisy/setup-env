@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+command = "$1"
+shift
+
+if [[ $# -gt 0 ]]; then
+  case "$command" in
+  install) ;;
+
+  esac
+fi

@@ -1,5 +1,5 @@
 echo "Applying Arch specific tweaks..."
 
-sudo pacman -S --noconfirm base-devel
+sudo pacman -Syu --noconfirm base-devel
 
 echo "Arch configuration done."

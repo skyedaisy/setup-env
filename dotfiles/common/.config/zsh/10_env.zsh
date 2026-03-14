@@ -3,7 +3,6 @@ export EDITOR=nano
 #export TERMINAL=alacritty
 export TERM=xterm-256color
 export ZSH="$HOME/.oh-my-zsh"
-export GOPATH=$HOME/go
 export HISTFILE="$HOME/.zsh_history"
 export HISTSIZE=1000000000
 export SAVEHIST=1000000000
