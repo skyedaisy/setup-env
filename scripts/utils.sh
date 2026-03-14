@@ -152,6 +152,7 @@ apply_dotfiles() {
     if [[ -n "${MACHINE:-}" ]]; then
         if [[ -d "$DOTFILES_DIR/machines/$MACHINE" ]]; then
             log "Applying machine: $MACHINE"
+            log "MACHINE=$MACHINE"
             stow -nvt -d "$DOTFILES_DIR/machines" -t "$HOME" "$MACHINE"
         fi
     fi
@@ -160,7 +161,6 @@ apply_dotfiles() {
     if [[ -n "${PROFILE:-}" ]]; then
         if [[ -d "$DOTFILES_DIR/profiles/$PROFILE" ]]; then
             log "Applying profile: $PROFILE"
-            log "MACHINE=$MACHINE"
             stow -nvt -d "$DOTFILES_DIR/profiles" -t "$HOME" "$PROFILE"
         fi
     fi
