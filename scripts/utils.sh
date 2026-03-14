@@ -160,6 +160,7 @@ apply_dotfiles() {
     if [[ -n "${PROFILE:-}" ]]; then
         if [[ -d "$DOTFILES_DIR/profiles/$PROFILE" ]]; then
             log "Applying profile: $PROFILE"
+            log "MACHINE=$MACHINE"
             stow -nvt -d "$DOTFILES_DIR/profiles" -t "$HOME" "$PROFILE"
         fi
     fi
