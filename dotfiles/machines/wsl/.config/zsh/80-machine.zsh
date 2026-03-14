@@ -1,0 +1,2 @@
+echo "WSL MACHINE CONFIG"
+export MACHINE_TYPE="wsl"

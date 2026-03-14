@@ -1,2 +1,2 @@
-# home machine theme
-ZSH_THEME="powerlevel10k/powerlevel10k"
+echo "HOME HOST CONFIG"
+export HOST_ROLE="home"
