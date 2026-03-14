@@ -149,13 +149,8 @@ apply_dotfiles() {
 
 
     # machine layer
-    if [[ -n "${MACHINE:-}" ]]; then
-        if [[ -d "$DOTFILES_DIR/machines/$MACHINE" ]]; then
-            log "Applying machine: $MACHINE"
-            log "MACHINE=$MACHINE"
-            stow -nvt -d "$DOTFILES_DIR/machines" -t "$HOME" "$MACHINE"
-        fi
-    fi
+    cd "$DOTFILES_DIR/machines"
+    stow -R -t "$HOME" "$MACHINE"
 
     # profile layer
     if [[ -n "${PROFILE:-}" ]]; then
