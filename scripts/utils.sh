@@ -147,29 +147,20 @@ apply_dotfiles() {
         stow -R -d "$DOTFILES_DIR" -t "$HOME" common
     fi
 
-    # --------------------------
-    # machine layer
-    # --------------------------
 
-    if [ -n "${MACHINE:-}" ] && [ -d "$DOTFILES_DIR/machines/$MACHINE" ]; then
-        log "Applying machine dotfiles: $MACHINE"
-        stow -d "$DOTFILES_DIR/machines" -t "$HOME" "$MACHINE"
+    # machine layer
+    if [[ -n "${MACHINE:-}" ]]; then
+        if [[ -d "$DOTFILES/machines/$MACHINE" ]]; then
+            log "Applying machine: $MACHINE"
+            stow -R -d "$DOTFILES/machines" -t "$HOME" "$MACHINE"
+        fi
     fi
 
-    # --------------------------
-    # host layer
-    # --------------------------
-
-    local HOST_FILE="$HOME/.config/setup-env/host"
-
-    if [ -f "$HOST_FILE" ]; then
-
-        local ROLE
-        ROLE=$(head -n1 "$HOST_FILE")
-
-        if [ -d "$DOTFILES_DIR/hosts/$ROLE" ]; then
-            log "Applying host dotfiles: $ROLE"
-            stow -d "$DOTFILES_DIR/hosts" -t "$HOME" "$ROLE"
+    # profile layer
+    if [[ -n "${PROFILE:-}" ]]; then
+        if [[ -d "$DOTFILES/profiles/$PROFILE" ]]; then
+            log "Applying profile: $PROFILE"
+            stow -R -d "$DOTFILES/profiles" -t "$HOME" "$PROFILE"
         fi
     fi
 }
