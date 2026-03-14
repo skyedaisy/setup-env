@@ -10,9 +10,12 @@ run_command() {
             ;;
 
         --info)
+            if [[ -z "${2:-}" ]]; then
+                echo "Usage: --info <module>"; exit 1
+            fi
             module_info "$2"
             exit 0
-            ;;
+        ;;
 
         --profiles)
             list_profiles

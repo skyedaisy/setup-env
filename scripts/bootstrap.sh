@@ -10,8 +10,4 @@ bootstrap_tools() {
     if ! command -v yq &>/dev/null; then
         install_pkg yq
     fi
-    if ! command -v chezmoi >/dev/null; then
-    echo "[bootstrap] installing chezmoi"
-    sh -c "$(curl -fsLS get.chezmoi.io)"
-fi
 }
