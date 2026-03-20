@@ -1,0 +1,12 @@
+name: docker
+
+description: Install Docker engine and configure service
+
+dependencies:
+  - base
+
+packages:
+  arch:
+    - docker
+  ubuntu:
+    - docker.io

@@ -1,0 +1,19 @@
+name: dev
+
+description: Developer tools (tmux, ripgrep, fd, etc)
+
+dependencies:
+  - base
+
+packages:
+  arch:
+    - tmux
+    - ripgrep
+    - fd
+  ubuntu:
+    - tmux
+    - ripgrep
+    - clang
+    - gcc
+    - make
+    - fd-find

@@ -1,0 +1,124 @@
+#!/usr/bin/env bash
+SCRIPT_PATH="$HOME/setup-env"
+if [[ -f "$SCRIPT_PATH/includes/vars.sh" ]]; then
+	source "$SCRIPT_PATH/includes/vars.sh"
+fi
+
+set -euo pipefail
+
+# Core tools
+
+sudo pacman -Sy --needed --noconfirm \
+	zip unzip tar git curl base-devel linux-headers
+
+# Install yay if it doesn't exist
+
+if ! command -v yay >/dev/null 2>&1; then
+	TMP_DIR=$(mktemp -d)
+	git clone https://aur.archlinux.org/yay.git "$TMP_DIR"
+	cd $TMP_DIR
+	makepkg -si --noconfirm
+fi
+
+# Install uv
+if ! command -v uv >/dev/null 2>&1; then
+	TMP_DIR=$(mktemp -d)
+	curl -Ls https://astral.sh/uv/install.sh | sh
+fi
+
+# Install font
+FONTS_DIR="$HOME/.local/share/fonts"
+NERD_FONT_DIR="$FONTS_DIR/nerd-fonts"
+if [[ ! -d "$NERD_FONT_DIR" ]]; then
+	mkdir -p "$NERD_FONT_DIR"
+fi
+
+install_font() {
+	FONT_NAME="$1"
+	FONT_DIR="$NERD_FONT_DIR/$FONT_NAME"
+	FONT_ARCHIVE="$FONT_DIR/$FONT_NAME.tar.xz"
+	FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/latest/download/$FONT_NAME.tar.xz"
+
+	if [[ -d "$FONT_DIR" ]]; then
+		echo "$FONT_NAME already installed"
+		return
+	fi
+	if [[ "$FONT_NAME" == "MapleMono" ]]; then
+		FONT_URL="https://github.com/subframe7536/maple-font/releases/download/v7.9/MapleMono-NF-CN-unhinted.zip"
+	fi
+	mkdir -p "$FONT_DIR"
+
+	echo "Downloading $FONT_NAME..."
+	curl -fL "$FONT_URL" -o "$FONT_ARCHIVE"
+
+	echo "Extracting..."
+	(
+		cd "$FONT_DIR" || exit 1
+		tar -xf "$FONT_ARCHIVE"
+		rm -f "$FONT_ARCHIVE"
+	)
+
+	fc-cache -fv 2 >/dev/null &>1
+}
+# Interactive mode for font install
+echo -e "${BGreen}Installing Fonts ${GolangVersion}${Color_Off}"
+PS3="Select Font: "
+
+fonts=("JetBrainsMono" "MapleMono" "AdwaitaMono" "Iosevka")
+options=("${fonts[@]}" "ALl" "Exit")
+
+select opt in "${options[@]}"; do
+	case $opt in
+	"All")
+		for font in "${fonts[@]}"; do
+			install "$font"
+		done
+		break
+		;;
+	"Exit")
+		break
+		;;
+	*)
+		if [[ " ${fonts[*]} " =~ " $opt " ]]; then
+			install_font "$opt"
+			break
+		else
+			echo "Invalid choice"
+		fi
+		;;
+	esac
+done
+
+# Install chezmoi (for dotfiles manager)
+if ! command chezmoi --version >/dev/null 2>&1; then
+	sudo pacman -S chezmoi --noconfirm
+fi
+
+# Install konsave (to save or restore kde plasma configs)
+if ! command -v konsave >/dev/null 2>&1; then
+	uv tool install konsave
+fi
+
+# Installing golang
+if ! command -v go >/dev/null 2>&1; then
+	GolangVersion="1.26.1"
+	GolangURL="https://golang.org/dl/go${GolangVersion}.linux-amd64.tar.gz"
+
+	echo -e "${BGreen}Installing Golang ${GolangVersion}${Color_Off}"
+
+	TMP_DIR=$(mktemp -d)
+	ARCHIVE="$TMP_DIR/go${GolangVersion}.tar.gz"
+
+	curl -fL "$GolangURL" -o "$ARCHIVE"
+
+	(
+		cd "$TMP_DIR" || exit 1
+		sudo tar -C /usr/local -xzf "$ARCHIVE"
+		rm -f "$ARCHIVE"
+	)
+fi
+
+# Installing rust
+if ! command -v cargo >/dev/null 2>&1; then
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+fi

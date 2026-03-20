@@ -1,0 +1,3 @@
+dotfiles/.DS_Store
+dotfiles/**/plugged
+dotfiles/**/node_modules

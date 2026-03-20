@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+SCRIPT_DIR="$HOME/setup-env"
+set -euo pipefail
+command="$1"
+
+shift
+
+cmd_path="$SCRIPT_DIR/interact/os-$command"
+
+if [[ -x $cmd_path ]]; then
+	"$cmd_path" "$@"
+else
+	echo "Unknown command: $command"
+fi

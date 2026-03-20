@@ -1,0 +1,12 @@
+name: zsh
+
+dependencies:
+  - base
+
+packages:
+  arch:
+    - zsh
+    - git
+  ubuntu:
+    - zsh
+    - git

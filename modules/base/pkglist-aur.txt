@@ -1,0 +1,7 @@
+brave-bin
+kwin-effects-better-blur-dx-git
+plasma6-applets-kurve
+visual-studio-code-bin
+yay
+yay-debug
+zen-browser-bin

@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Installing darkly theme
+sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative kcoreaddons \
+	kcmutils kcolorscheme kconfig kguiaddons kiconthemes kwindowsystem git \
+	qt5-declarative qt5-x11extras gcc make kcmutils5 \
+	frameworkintegration5 kconfigwidgets5 kiconthemes5 \
+	kirigami2 kwindowsystem5
+TMP_DIR=$(mktemp -d)
+(
+	cd "$TMP_DIR" || exit 1
+	git clone --single-branch --depth=1 https://github.com/Bali10050/Darkly.git
+	cd Darkly
+	./install.sh QT6
+)
+rm -rf "$TMP_DIR"
+
+# Installing kurve (Audio visualizer)
+sudo pacman -S git gcc cmake extra-cmake-modules libplasma cava qt6-websockets python-websockets --noconfirm
+(
+	TMP_DIR=$(mktemp -d)
+	cd "$TMP_DIR" || exit 1
+	git clone https://github.com/luisbocanegra/kurve.git
+	cd kurve
+	./install.sh
+)
+rm -rf "$TMP_DIR"
+
+# Installing kara (Pager)
+sudo pacman -S base-devel cmake extra-cmake-modules qt6-base qt6-declarative kwin \
+	libplasma plasma-activities plasma-workspace --noconfirm
+(
+	TMP_DIR=$(mktemp -d)
+	cd "$TMP_DIR" || exit 1
+	git clone https://github.com/dhruv8sh/kara.git
+	./install.sh
+)
+rm -rf "$TMP_DIR"

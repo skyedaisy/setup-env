@@ -1,0 +1,10 @@
+name: test
+description: testing module
+
+dependencies: []
+
+packages:
+  arch:
+    - tree
+  ubuntu:
+    - tree
