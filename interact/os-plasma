@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+SCRIPT_PATH="$HOME/setup-env"
 # Installing darkly theme
 sudo pacman -S --noconfirm cmake extra-cmake-modules kdecoration qt6-declarative kcoreaddons \
 	kcmutils kcolorscheme kconfig kguiaddons kiconthemes kwindowsystem git \
@@ -16,15 +16,7 @@ TMP_DIR=$(mktemp -d)
 rm -rf "$TMP_DIR"
 
 # Installing kurve (Audio visualizer)
-sudo pacman -S git gcc cmake extra-cmake-modules libplasma cava qt6-websockets python-websockets --noconfirm
-(
-	TMP_DIR=$(mktemp -d)
-	cd "$TMP_DIR" || exit 1
-	git clone https://github.com/luisbocanegra/kurve.git
-	cd kurve
-	./install.sh
-)
-rm -rf "$TMP_DIR"
+yay -S --noconfirm --answerdiff None --answerclean None --mflags "--noconfirm" --cleanafter plasma6-applets-kurve
 
 # Installing kara (Pager)
 sudo pacman -S base-devel cmake extra-cmake-modules qt6-base qt6-declarative kwin \
@@ -36,3 +28,20 @@ sudo pacman -S base-devel cmake extra-cmake-modules qt6-base qt6-declarative kwi
 	./install.sh
 )
 rm -rf "$TMP_DIR"
+
+# Installing panel colorizer
+sudo pacman -S git gcc cmake extra-cmake-modules libplasma spectacle python python-dbus python-gobject
+(
+	TMP_DIR=$(mktemp -d)
+	cd "$TMP_DIR" || exit 1
+	git clone https://github.com/luisbocanegra/plasma-panel-colorizer
+	cd plasma-panel-colorizer
+	./install.sh
+)
+rm -rf "$TMP_DIR"
+
+# Installing sddm theme
+yay -S --noconfirm --answerdiff None --answerclean None --mflags "--noconfirm" --cleanafter sddm-silent-theme
+sudo cp -r "$SCRIPT_PATH/desktop-environment/plasma/sddm/sddm.conf" /etc/sddm.conf
+sudo cp -r "$SCRIPT_PATH/desktop-environment/plasma/sddm/default.conf" /usr/share/sddm/themes/silent/configs/default.conf
+sudo cp -r "$SCRIPT_PATH/desktop-environment/plasma/sddm/azure-serenity.mp4" /usr/share/sddm/themes/silent/backgrounds/
